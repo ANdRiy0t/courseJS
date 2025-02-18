@@ -1,15 +1,4 @@
 function triangle(val1, type1, val2, type2) {
-    console.log("Інструкція:");
-    console.log("Використовуйте синтаксис: triangle(значення1, 'тип1', значення2, 'тип2')");
-    console.log("Допустимі 'типи' значень:");
-    console.log("  'leg'             - катет");
-    console.log("  'hypotenuse'      - гіпотенуза");
-    console.log("  'adjacent angle'  - кут, прилеглий до катета (цей катет будемо приймати за b)");
-    console.log("  'opposite angle'  - кут, протилежний до катета (цей катет будемо приймати за a)");
-    console.log("  'angle'           - один з гострих кутів (при заданій гіпотенузі)");
-    console.log("Приклад виклику: triangle(4, 'leg', 8, 'hypotenuse')");
-
-
     const allowedTypes = ["leg", "hypotenuse", "adjacent angle", "opposite angle", "angle"];
     if (!allowedTypes.includes(type1) || !allowedTypes.includes(type2)) {
         console.log("Некоректно заданий тип. Будь ласка, перечитайте інструкцію.");
