@@ -1,7 +1,7 @@
 
 
 
-function executeMethod(){
+export function executeMethod(){
     // if(!options.sayGoodBye) console.error("options.sayGoodBye was null")
     // if(!options.sayHello) console.error("options.sayHello was null")
     
