@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorting Library Demo</title>
+</head>
+<body>
+<h1>Sorting Library Demo</h1>
+<section>
+    <h2>Non-Sparse Array Sorting Results</h2>
+    <div id="nonSparseResults"></div>
+</section>
+<section>
+    <h2>Sparse Array Sorting Results</h2>
+    <div id="sparseResults"></div>
+</section>
+
+<script type="text/javascript" src="./helpers/SortingLib.js"></script>
+
+<script >
+    const maxLength = 100;
+    const helpNumberForCreateArrayWithRandomValues = 1000;
+    
+    const nonSparseArray = Array.from({ length: maxLength }, () => Math.floor(Math.random() * helpNumberForCreateArrayWithRandomValues));
+
+    const sparseArray = nonSparseArray.slice();
+    for (let i = 20; i <= 30; i++) {
+        delete sparseArray[i];
+    }
+
+    console.log("NonSparseArray:\n")
+    SortingLib.bubbleSort(nonSparseArray, true);
+    SortingLib.selectionSort(nonSparseArray, true);
+    SortingLib.insertionSort(nonSparseArray, true);
+    SortingLib.shellSort(nonSparseArray, true);
+    SortingLib.quickSort(nonSparseArray, true);
+    console.log("\n\n")
+    
+    
+    SortingLib.bubbleSort(sparseArray, true);
+    SortingLib.selectionSort(sparseArray, true);
+    SortingLib.insertionSort(sparseArray, true);
+    SortingLib.shellSort(sparseArray, true);
+    SortingLib.quickSort(sparseArray, true);
+    
+</script>
+</body>
+</html>
