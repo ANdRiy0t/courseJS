@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => { dataStore.gifts = data; })
         .catch(err => console.error('Не вдалось завантажити gifts.json:', err));
 
+    fetch(`electronic.json`)
+        .then(res => res.json())
+        .then(data => { dataStore.electronic = data; })
+        .catch(err => console.error('Не вдалось завантажити gifts.json:', err));
+
     document.getElementById('homeLink').addEventListener('click', e => {
         e.preventDefault(); showHome();
     });
