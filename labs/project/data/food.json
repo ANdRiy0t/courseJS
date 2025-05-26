@@ -1,0 +1,37 @@
+[
+  {
+    "id": "f1",
+    "name": "Margherita Pizza",
+    "shortname": "pizza",
+    "description": "Classic Italian pizza with fresh tomatoes, mozzarella cheese, and basil on a thin crust. Perfect for a light meal.",
+    "price": "$12.99"
+  },
+  {
+    "id": "f2",
+    "name": "Sushi Platter",
+    "shortname": "sushi",
+    "description": "Assorted sushi rolls with fresh fish, avocado, and rice, served with soy sauce and wasabi. Ideal for sushi lovers.",
+    "price": "$24.99"
+  },
+  {
+    "id": "f3",
+    "name": "Grilled Salmon",
+    "shortname": "salmon",
+    "description": "Juicy grilled salmon fillet with lemon herb seasoning, served with roasted vegetables. A healthy dinner option.",
+    "price": "$18.99"
+  },
+  {
+    "id": "f4",
+    "name": "Chocolate Cake",
+    "shortname": "cake",
+    "description": "Rich chocolate layered cake with creamy frosting, perfect for dessert lovers or special occasions.",
+    "price": "$8.99"
+  },
+  {
+    "id": "f5",
+    "name": "Caesar Salad",
+    "shortname": "salad",
+    "description": "Fresh romaine lettuce with croutons, parmesan cheese, and creamy Caesar dressing. Great as a side or main dish.",
+    "price": "$9.99"
+  }
+]

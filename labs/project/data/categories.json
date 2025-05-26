@@ -1,0 +1,8 @@
+[
+  { "id": 1, "name": "Toys",    "shortname": "food",        "notes": "Toys." },
+  { "id": 2, "name": "Gifts",  "shortname": "gifts",       "notes": "Gifts." },
+  { "id": 3, "name": "Electronic",  "shortname": "electronic",       "notes": "Electronic." },
+  { "id": 4, "name": "Programing Languages",  "shortname": "programmingLanguages",       "notes": "Programing Languages." },
+  { "id": 5, "name": "Food",  "shortname": "food",       "notes": "Food." },
+  { "id": 6, "name": "Vacancies",  "shortname": "vacancies",       "notes": "Vacancies." }
+]

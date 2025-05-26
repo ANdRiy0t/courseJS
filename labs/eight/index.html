@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Адаптивна сторінка</title>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">МійСайт</div>
+    <button class="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu">
+        <li><a href="#"><img src="https://place-hold.it/24x24?text=H" alt="Home">Головна</a></li>
+        <li><a href="#"><img src="https://place-hold.it/24x24?text=A" alt="About">Про нас</a></li>
+        <li><a href="#"><img src="https://place-hold.it/24x24?text=S" alt="Services">Послуги</a></li>
+        <li><a href="#"><img src="https://place-hold.it/24x24?text=C" alt="Contact">Контакти</a></li>
+    </ul>
+</nav>
+
+<div class="carousel">
+    <div class="slides">
+        <div class="slide"><img src="https://place-hold.it/800x400?text=Slide+1" alt="Slide 1"></div>
+        <div class="slide"><img src="https://place-hold.it/800x400?text=Slide+2" alt="Slide 2"></div>
+        <div class="slide"><img src="https://place-hold.it/800x400?text=Slide+3" alt="Slide 3"></div>
+    </div>
+    <button class="prev">‹</button>
+    <button class="next">›</button>
+    <div class="indicators">
+        <span class="dot" data-index="0"></span>
+        <span class="dot" data-index="1"></span>
+        <span class="dot" data-index="2"></span>
+    </div>
+</div>
+
+<div class="large-only" style="text-align:center;">
+    <img src="https://place-hold.it/200x200?text=Large+1" alt="Large 1">
+    <img src="https://place-hold.it/200x200?text=Large+2" alt="Large 2">
+    <img src="https://place-hold.it/200x200?text=Large+3" alt="Large 3">
+</div>
+
+<!-- Зображення для середніх/малих екранів -->
+<div class="medium-only">
+    <img src="https://place-hold.it/200x200?text=Medium+1" alt="Medium 1">
+    <img src="https://place-hold.it/200x200?text=Medium+2" alt="Medium 2">
+    <img src="https://place-hold.it/200x200?text=Medium+3" alt="Medium 3">
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+<script>
+    // Toggle навігейшн
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    hamburger.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+    });
+
+    // Карусель
+    const slides = document.querySelector('.slides');
+    const slideCount = document.querySelectorAll('.slide').length;
+    const dots = document.querySelectorAll('.dot');
+    let currentIndex = 0;
+    let slideInterval = setInterval(nextSlide, 4000);
+
+    function goToSlide(index) {
+        slides.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[index].classList.add('active');
+        currentIndex = index;
+    }
+    function nextSlide() {
+        let next = (currentIndex + 1) % slideCount;
+        goToSlide(next);
+    }
+    function prevSlide() {
+        let prev = (currentIndex - 1 + slideCount) % slideCount;
+        goToSlide(prev);
+    }
+
+    document.querySelector('.next').addEventListener('click', () => {
+        clearInterval(slideInterval);
+        nextSlide();
+    });
+    document.querySelector('.prev').addEventListener('click', () => {
+        clearInterval(slideInterval);
+        prevSlide();
+    });
+    dots.forEach(dot => {
+        dot.addEventListener('click', e => {
+            clearInterval(slideInterval);
+            goToSlide(parseInt(e.target.dataset.index));
+        });
+    });
+
+    // Ініціалізація
+    goToSlide(0);
+</script>
+
+
+
+
+
+
+
+
+
+<style>
+    /* Загальні стилі */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; }
+    img { max-width: 100%; display: block; }
+
+    /* Навігація */
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #333;
+        color: #fff;
+        padding: 0.5rem 1rem;
+    }
+    .navbar .logo { font-size: 1.2rem; }
+    .nav-menu {
+        list-style: none;
+        display: flex;
+    }
+    .nav-menu li {
+        margin-left: 1rem;
+    }
+    .nav-menu a {
+        color: #fff;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+    .nav-menu img { margin-right: 0.5rem; width: 24px; height: 24px; }
+
+    /* Гамбургер */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+    .hamburger span {
+        width: 25px;
+        height: 3px;
+        background: #fff;
+        margin: 4px 0;
+    }
+
+    /* Карусель */
+    .carousel {
+        position: relative;
+        overflow: hidden;
+        max-width: 800px;
+        margin: 2rem auto;
+    }
+    .slides {
+        display: flex;
+        transition: transform 0.5s ease;
+    }
+    .slide {
+        min-width: 100%;
+    }
+    .carousel button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.5);
+        border: none;
+        color: #fff;
+        font-size: 2rem;
+        padding: 0.2rem 0.5rem;
+        cursor: pointer;
+    }
+    .prev { left: 10px; }
+    .next { right: 10px; }
+    .indicators {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+    }
+    .indicators .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.5);
+        margin: 0 4px;
+        cursor: pointer;
+    }
+    .indicators .dot.active { background: #fff; }
+
+    /* Адаптивні зображення */
+    .large-only { display: block; }
+    .medium-only { display: none; }
+
+    /* Medium (max-width: 767px) */
+    @media (max-width: 767px) {
+        .nav-menu {
+            position: absolute;
+            top: 100%; left: 0;
+            width: 100%;
+            flex-direction: column;
+            background: #333;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .nav-menu.active { max-height: 300px; }
+        .hamburger { display: flex; }
+        .large-only { display: none; }
+        .medium-only { display: block; margin: 1rem; }
+    }
+</style>

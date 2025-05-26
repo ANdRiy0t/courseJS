@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+</head>
+
+<body>
+<div id="header"></div>
+<div style="margin: auto" id="main-container"></div>
+
+<app-footer></app-footer>
+
+</body>
+
+</html>
+
+<script type="module" src="index.js"></script>
+<script type="module" src="./components/header.js"></script>
+<script type="module" src="./components/footer.js"></script>
+
+<script type="module">
+    import {createAppHeader} from "./components/header.js"
+    import {CatalogPage} from "./pages/CatalogPage.js"
+    import {FlappyBird} from "./pages/FlappyBird.js";
+
+    const catalogPage = new CatalogPage();
+    const flappyBird = new FlappyBird("main-container");
+    
+    document.addEventListener("DOMContentLoaded", () => {
+        
+        const header = createAppHeader();
+        document.body.prepend(header);
+        
+        document.getElementById("catalog-button").addEventListener("click", () => {
+            catalogPage.init();
+        });
+
+        document.getElementById("start-game").addEventListener("click", () => {
+            flappyBird.init();
+        });
+    });
+</script>
+
+<style>
+    body{
+        margin: 0;
+    }
+</style>
