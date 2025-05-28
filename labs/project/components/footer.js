@@ -2,20 +2,22 @@
 export class CustomFooter extends HTMLElement {
     constructor() {
         super();
+        let username = localStorage.getItem('username') || 'Guest';
         const shadow = this.attachShadow({ mode: 'open' });
         shadow.innerHTML = `
       <style>
         .site-footer {
           background: #222;
           color: #ddd;
-          padding: 40px 20px;
+          padding: 20px;
+          height: 160px;
           font-family: "Montserrat", sans-serif;
         }
         .footer-container {
           display: flex;
           flex-wrap: wrap;
           max-width: 1200px;
-          margin: 0 auto;
+          margin: auto;
           gap: 30px;
           justify-content: space-between;
         }
@@ -33,7 +35,7 @@ export class CustomFooter extends HTMLElement {
           margin: 0;
         }
         .footer-section ul li {
-          margin-bottom: 6px;
+          margin-bottom: 2px;
         }
         #user-greeting {
           font-size: 1rem;
@@ -51,20 +53,20 @@ export class CustomFooter extends HTMLElement {
         }
       </style>
 
-      <footer class="site-footer">
+      <footer class="site-footer mt-auto">
         <div class="footer-container">
           <div class="footer-section developers">
-            <h4 class="footer-title">Розробники</h4>
+            <h4 class="footer-title">Розробники:</h4>
             <ul>
-              <li>Іван Іваненко</li>
-              <li>Марія Петренко</li>
-              <li>Сергій Коваленко</li>
+              <li>Федів Станіслав</li>
+              <li>Пліхтяк Микола</li>
+              <li>Козьменчук Андрій</li>
             </ul>
           </div>
 
           <div class="footer-section user-info">
-            <h4 class="footer-title">Ваш статус</h4>
-            <p id="user-greeting">Привіт, <strong>Гість</strong>!</p>
+            <h4 class="footer-title">Day Question:</h4>
+            <p id="user-greeting">Haw are you, <strong>${username}</strong>?</p>
           </div>
 
           <div class="footer-section copyright">

@@ -1,8 +1,32 @@
 [
-  { "id": 1, "name": "Toys",    "shortname": "food",        "notes": "Toys." },
-  { "id": 2, "name": "Gifts",  "shortname": "gifts",       "notes": "Gifts." },
-  { "id": 3, "name": "Electronic",  "shortname": "electronic",       "notes": "Electronic." },
-  { "id": 4, "name": "Programing Languages",  "shortname": "programmingLanguages",       "notes": "Programing Languages." },
-  { "id": 5, "name": "Food",  "shortname": "food",       "notes": "Food." },
-  { "id": 6, "name": "Vacancies",  "shortname": "vacancies",       "notes": "Vacancies." }
+  {
+    "id": 1,
+    "name": "History",
+    "shortname": "history",
+    "notes": "history."
+  },
+  {
+    "id": 2,
+    "name": "Development",
+    "shortname": "development",
+    "notes": "development."
+  },
+  {
+    "id": 3,
+    "name": "Mechanics",
+    "shortname": "mechanics",
+    "notes": "mechanics."
+  },
+  {
+    "id": 4,
+    "name": "UI UX",
+    "shortname": "ui_ux",
+    "notes": "UI UX"
+  },
+  {
+    "id": 5,
+    "name": "Psychology",
+    "shortname": "psychology",
+    "notes": "Psychology."
+  }
 ]

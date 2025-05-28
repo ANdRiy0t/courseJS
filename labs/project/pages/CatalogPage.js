@@ -3,67 +3,44 @@ export class CatalogPage {
         this.dataStore = {};
         this.categories = [];
     }
-
-    #initDOMContent(){
-        const body = document.getElementById("main-container");
-        body.innerHTML = `<nav class="mb-4">
-                                <a href="#" id="homeLink" class="me-3">Додому</a>
-                                <a href="#" id="catalogLink">Каталог</a>
-                            </nav>
-                            
-                            <div id="content">
-                                <h2>Ласкаво просимо!</h2>
-                                <p>Оберіть категорію з меню.</p>
-                            </div>`;
-    }
-    async init() {
-        this.#initDOMContent();
-        
+    async #getData() {
         try {
             const [
                 categories,
-                toys,
-                gifts,
-                electronic,
-                vacancies,
-                food,
-                programmingLanguages
+                history,
+                development,
+                mechanics,
+                ui_ux,
+                psychology
             ] = await Promise.all([
                 fetch('data/categories.json').then(r => r.json()),
-                fetch('data/toys.json').then(r => r.json()),
-                fetch('data/gifts.json').then(r => r.json()),
-                fetch('data/electronic.json').then(r => r.json()),
-                fetch('data/vacancies.json').then(r => r.json()),
-                fetch('data/food.json').then(r => r.json()),
-                fetch('data/programmingLanguages.json').then(r => r.json())
+                fetch('data/history.json').then(r => r.json()),
+                fetch('data/development.json').then(r => r.json()),
+                fetch('data/mechanics.json').then(r => r.json()),
+                fetch('data/ui_ux.json').then(r => r.json()),
+                fetch('data/psychology.json').then(r => r.json())
             ]);
 
             this.categories = categories;
             Object.assign(this.dataStore, {
-                toys, gifts, electronic, vacancies, food, programmingLanguages
+                history, development, mechanics, ui_ux, psychology
             });
-
-            this._wireUpNav();
-            this.showHome();
+        } catch (err) {
+            console.error('Помилка завантаження даних:', err);
+            this.categories = [];
+            this.dataStore = {};
         }
-        catch (err) {
+    }
+
+    async renderPage() {
+        await this.#getData(); 
+        
+        try {
+            this.showCatalog();
+        } catch (err) {
             console.error('Не вдалось завантажити дані:', err);
-            document.getElementById('content').innerHTML = `<div class="alert alert-danger">Помилка завантаження даних.</div>`;
+            document.getElementById('main-container').innerHTML = `<div class="alert alert-danger">Помилка завантаження даних.</div>`;
         }
-    }
-
-    _wireUpNav() {
-        document.getElementById('homeLink')
-            .addEventListener('click', e => { e.preventDefault(); this.showHome(); });
-        document.getElementById('catalogLink')
-            .addEventListener('click', e => { e.preventDefault(); this.showCatalog(); });
-    }
-
-    showHome() {
-        document.getElementById('content').innerHTML = `
-      <h2>Ласкаво просимо!</h2>
-      <p>Оберіть категорію з меню.</p>
-    `;
     }
 
     showCatalog() {
@@ -71,14 +48,13 @@ export class CatalogPage {
             `<h2>Категорії</h2>`,
             `<ul class="list-group mb-3">`,
             ...this.categories.map(cat => `
-        <li class="list-group-item">
-          <a href="#" data-short="${cat.shortname}" class="cat-link">${cat.name}</a>
-        </li>`),
-            `</ul>`,
-            `<button id="specialsBtn" class="btn btn-warning">Specials</button>`
+                <li class="list-group-item">
+                    <a href="#" data-short="${cat.shortname}" class="cat-link">${cat.name}</a>
+                </li>`),
+            `</ul>`
         ].join('');
 
-        const c = document.getElementById('content');
+        const c = document.getElementById('main-container');
         c.innerHTML = html;
 
         c.querySelectorAll('.cat-link').forEach(a =>
@@ -87,11 +63,6 @@ export class CatalogPage {
                 this.loadCategory(e.currentTarget.dataset.short);
             })
         );
-        c.querySelector('#specialsBtn')
-            .addEventListener('click', () => {
-                const rnd = this.categories[Math.floor(Math.random()*this.categories.length)];
-                this.loadCategory(rnd.shortname);
-            });
     }
 
     async loadCategory(shortname) {
@@ -100,8 +71,7 @@ export class CatalogPage {
             try {
                 items = await fetch(`data/${shortname}.json`).then(r => r.json());
                 this.dataStore[shortname] = items;
-            }
-            catch (err) {
+            } catch (err) {
                 console.error(`Не вдалось завантажити ${shortname}.json:`, err);
                 return;
             }
@@ -109,22 +79,75 @@ export class CatalogPage {
 
         const cat = this.categories.find(c => c.shortname === shortname);
         const cards = items.map(item => `
-      <div class="col-md-4 mb-4">
-        <div class="card">
-          <img src="https://place-hold.it/200x200?text=${encodeURIComponent(item.name)}"
-               class="card-img-top" alt="${item.name}">
-          <div class="card-body">
-            <h5 class="card-title">${item.name}</h5>
-            <p class="card-text">${item.description}</p>
-            <p class="card-text"><strong>Ціна:</strong> ${item.price}</p>
-          </div>
-        </div>
-      </div>`).join('');
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="https://place-hold.it/200x200?text=${encodeURIComponent(item.name)}"
+                         class="card-img-top" alt="${item.name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${item.name}</h5>
+                        <p class="card-text">${item.description}</p>
+                        <p class="card-text"><strong>Ціна:</strong> ${item.price}</p>
+                    </div>
+                </div>
+            </div>`).join('');
 
-        document.getElementById('content').innerHTML = `
-      <h2>${cat.name}</h2>
-      <p>${cat.notes || ''}</p>
-      <div class="row">${cards}</div>
-    `;
+        document.getElementById('main-container').innerHTML = `
+            <h2>${cat.name}</h2>
+            <div class="row">${cards}</div>
+        `;
+    }
+
+    getRandomItems(count) {
+        const allItems = [];
+        for (const key in this.dataStore) {
+            if (this.dataStore.hasOwnProperty(key)) {
+                const items = this.dataStore[key];
+                if (Array.isArray(items)) {
+                    allItems.push(...items);
+                }
+            }
+        }
+        if (allItems.length <= 0) {
+            return [];
+        }
+        if (count > allItems.length) {
+            count = allItems.length;
+        }
+        const shuffled = allItems.sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+    }
+
+    async showRandomItems(count, id) {
+        await this.#getData();
+        
+        const randomItems = this.getRandomItems(count);
+        if (randomItems.length > 0) {
+            const cards = randomItems.map(item =>
+                `<div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="https://place-hold.it/200x200?text=${encodeURIComponent(item.name)}"
+                             class="card-img-top" alt="${item.name}">
+                        <div class="card-body">
+                            <h5 class="card-title">${item.name}</h5>
+                            <p class="card-text">${item.description}</p>
+                            <p class="card-text"><strong>Ціна:</strong> ${item.price}</p>
+                        </div>
+                    </div>
+                </div>`).join('');
+
+            document.getElementById(id).innerHTML += `
+                <h2>Випадкові статті</h2>
+                <div class="row">${cards}</div>
+            `;
+        }
+    }
+
+    filterCategoriesByShortname(searchTerm) {
+        if (!searchTerm || searchTerm.trim() === '') {
+            return this.categories;
+        }
+        return this.categories.filter(cat =>
+            cat.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
     }
 }

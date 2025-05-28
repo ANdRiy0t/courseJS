@@ -1,8 +1,6 @@
-// app-header.js
 export function createAppHeader() {
     const header = document.createElement('header');
-
-    // Створюємо елемент style для CSS
+    
     const style = document.createElement('style');
     style.textContent = `
         .navbar {
@@ -25,6 +23,9 @@ export function createAppHeader() {
             color: #fff;
             cursor: pointer;
         }
+        .navbar-menu(anywhere) {
+            padding: 0.5rem 1rem;
+        }
         .navbar-menu {
             display: flex;
             gap: 1rem;
@@ -33,6 +34,7 @@ export function createAppHeader() {
             color: #fff;
             text-decoration: none;
             padding: 0.5rem;
+            cursor: pointer;
             transition: background 0.2s;
         }
         .navbar-menu a:hover {
@@ -41,6 +43,30 @@ export function createAppHeader() {
         }
         .navbar-user {
             margin-left: 1rem;
+            font-size: 0.9rem;
+        }
+        .navbar-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .navbar-actions button {
+            background: #444;
+            border: none;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .navbar-actions button:hover {
+            background: #555;
+        }
+        .navbar-actions input {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            margin-right: 0.5rem;
             font-size: 0.9rem;
         }
         @media (max-width: 768px) {
@@ -62,38 +88,87 @@ export function createAppHeader() {
             .navbar-user {
                 display: none;
             }
+            .navbar-actions {
+                display: none;
+            }
         }
     `;
-
-    // Створюємо HTML-структуру
+    
+    let username = localStorage.getItem('username') || 'Guest';
+    
     const nav = document.createElement('nav');
     nav.className = 'navbar';
     nav.innerHTML = `
         <div class="navbar-brand">
             <a href="/">
-                <img src="logo.png" alt="Логотип застосунку" />
+                <img src="./images/bird-logo.svg" alt="Логотип застосунку" />
             </a>
         </div>
         <button class="navbar-toggler" aria-label="Toggle menu">☰</button>
         <div class="navbar-menu">
-            <a>Home</a>
-            <a id="catalog-button">Catalog</a>
+            <a id="home">Home</a>
+            <a id="catalog-button">Articles</a>
             <a id="start-game">Flappy bird</a>
         </div>
-        <div class="navbar-user">
-            Hello, <strong>Guest</strong>!
+        <div class="navbar-actions">
+            <div class="navbar-user">
+                Hello, <strong id="username">${username}</strong>!
+            </div>
+            <input type="text" id="registerInput" placeholder="Enter your name" style="display: none;" />
+            <button id="registerButton">Реєстрація</button>
+            <button id="logoutButton" style="display: ${username === 'Guest' ? 'none' : 'block'};">Logout</button>
         </div>
     `;
 
-    // Додаємо style та nav до header
     header.appendChild(style);
     header.appendChild(nav);
 
-    // Додаємо обробник подій для кнопки toggler
     const toggler = header.querySelector('.navbar-toggler');
     const menu = header.querySelector('.navbar-menu');
     toggler.addEventListener('click', () => {
         menu.classList.toggle('show');
+    });
+
+    const registerButton = header.querySelector('#registerButton');
+    const registerInput = header.querySelector('#registerInput');
+    const usernameDisplay = header.querySelector('#username');
+    const logoutButton = header.querySelector('#logoutButton');
+    const navbarUser = header.querySelector('.navbar-user');
+
+    registerButton.addEventListener('click', () => {
+        if (registerInput.style.display === 'none') {
+            registerInput.style.display = 'block';
+            registerButton.textContent = 'Submit';
+            navbarUser.style.display = 'none';
+        } else {
+            const newUsername = registerInput.value.trim();
+            if (newUsername) {
+                localStorage.setItem('username', newUsername);
+                usernameDisplay.textContent = newUsername;
+                registerInput.style.display = 'none';
+                registerButton.textContent = 'Реєстрація';
+                logoutButton.style.display = 'block';
+                navbarUser.style.display = 'block';
+                registerInput.value = '';
+            } else {
+                registerInput.style.display = 'none';
+                registerButton.textContent = 'Реєстрація';
+                navbarUser.style.display = 'block';
+            }
+        }
+    });
+
+    registerInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            registerButton.click();
+        }
+    });
+
+    logoutButton.addEventListener('click', () => {
+        localStorage.removeItem('username');
+        usernameDisplay.textContent = 'Guest';
+        logoutButton.style.display = 'none';
+        navbarUser.style.display = 'block';
     });
 
     return header;
