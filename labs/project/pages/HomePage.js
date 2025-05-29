@@ -5,7 +5,7 @@ export class HomePage {
     template = `
                 <div class="container mt-5">
                     <!-- Пошук -->
-                    <div class="input-group mb-4">
+                    <div class="input-group mb-4 mt-5">
                         <input type="text" id="searchInput" class="form-control" placeholder="Пошук категорій за shortname..." aria-label="Пошук категорій">
                         <button class="btn btn-primary" id="searchBtn">Знайти</button>
                     </div>

@@ -8,51 +8,16 @@
 
 <body>
 <div id="header"></div>
-<div style="padding: 16px; flex: 1;" id="main-container"></div>
-
-<app-footer></app-footer>
+<div id="main-container"></div>
+<div id="footer"></div>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 </html>
 
 <script type="module" src="index.js"></script>
-<script type="module" src="./components/header.js"></script>
-<script type="module" src="./components/footer.js"></script>
 
-<script type="module">
-    import {createAppHeader} from "./components/header.js"
-    import {CatalogPage} from "./pages/CatalogPage.js"
-    import {FlappyBird} from "./pages/FlappyBird.js";
-    import {HomePage} from "./pages/HomePage.js"
 
-    const catalogPage = new CatalogPage();
-    const flappyBird = new FlappyBird("main-container");
-    const homePage = new HomePage({
-        catalog: catalogPage,
-        game: flappyBird
-    })
-    
-    homePage.renderPage();
-    
-    document.addEventListener("DOMContentLoaded", () => {
-        
-        const header = createAppHeader();
-        document.body.prepend(header);
-
-        document.getElementById("home").addEventListener("click", () => {
-            homePage.renderPage();
-        });
-        
-        document.getElementById("catalog-button").addEventListener("click", () => {
-            catalogPage.renderPage();
-        });
-
-        document.getElementById("start-game").addEventListener("click", () => {
-            flappyBird.renderGame();
-        });
-    });
-</script>
 
 <style>
     body{
@@ -61,4 +26,22 @@
         flex-direction: column;
         min-height: 100vh;
     }
+
+    #main-container {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid black;
+        transition: margin-top .3s ease, justify-content .3s ease;
+    }
+    
+    #main-container.menu-open {
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-top: 200px;
+    }
+
 </style>

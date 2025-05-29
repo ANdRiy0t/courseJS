@@ -45,13 +45,13 @@ export class CatalogPage {
 
     showCatalog() {
         const html = [
-            `<h2>Категорії</h2>`,
-            `<ul class="list-group mb-3">`,
+            `<h2 class="mt-5">Категорії</h2>`,
+            `<div class="list-group mb-3">`,
             ...this.categories.map(cat => `
-                <li class="list-group-item">
-                    <a href="#" data-short="${cat.shortname}" class="cat-link">${cat.name}</a>
-                </li>`),
-            `</ul>`
+                <button data-short="${cat.shortname}" class="list-group-item  list-group-item-action cat-link">
+                    ${cat.name}
+                </button>`),
+            `</div>`
         ].join('');
 
         const c = document.getElementById('main-container');
@@ -92,7 +92,7 @@ export class CatalogPage {
             </div>`).join('');
 
         document.getElementById('main-container').innerHTML = `
-            <h2>${cat.name}</h2>
+            <h2 class="mt-5">${cat.name}</h2>
             <div class="row">${cards}</div>
         `;
     }

@@ -1,159 +1,98 @@
+const notRegistretedUser = 'Guest';
+
 export function createAppHeader() {
     const header = document.createElement('header');
-    
+
     const style = document.createElement('style');
     style.textContent = `
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #222;
-            color: #fff;
-            padding: 0.5rem 1rem;
-            margin-top: auto;
-        }
         .navbar-brand img {
             height: 40px;
         }
-        .navbar-toggler {
-            display: none;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            color: #fff;
-            cursor: pointer;
-        }
-        .navbar-menu(anywhere) {
-            padding: 0.5rem 1rem;
-        }
-        .navbar-menu {
-            display: flex;
-            gap: 1rem;
-        }
-        .navbar-menu a {
-            color: #fff;
-            text-decoration: none;
-            padding: 0.5rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .navbar-menu a:hover {
-            background: #444;
-            border-radius: 4px;
-        }
         .navbar-user {
-            margin-left: 1rem;
-            font-size: 0.9rem;
-        }
-        .navbar-actions {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .navbar-actions button {
-            background: #444;
-            border: none;
-            color: #fff;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        .navbar-actions button:hover {
-            background: #555;
-        }
-        .navbar-actions input {
-            padding: 0.5rem;
-            border: none;
-            border-radius: 4px;
-            margin-right: 0.5rem;
             font-size: 0.9rem;
         }
         @media (max-width: 768px) {
-            .navbar-toggler {
-                display: block;
-            }
-            .navbar-menu {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: #222;
-                flex-direction: column;
-                display: none;
-            }
-            .navbar-menu.show {
-                display: flex;
-            }
             .navbar-user {
-                display: none;
-            }
-            .navbar-actions {
                 display: none;
             }
         }
     `;
-    
+    header.appendChild(style);
+
     let username = localStorage.getItem('username') || 'Guest';
-    
+
     const nav = document.createElement('nav');
-    nav.className = 'navbar';
+    nav.className = 'navbar navbar-expand-lg navbar-dark bg-dark fixed-top';
     nav.innerHTML = `
-        <div class="navbar-brand">
-            <a href="/">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
                 <img src="./images/bird-logo.svg" alt="Логотип застосунку" />
             </a>
-        </div>
-        <button class="navbar-toggler" aria-label="Toggle menu">☰</button>
-        <div class="navbar-menu">
-            <a id="home">Home</a>
-            <a id="catalog-button">Articles</a>
-            <a id="start-game">Flappy bird</a>
-        </div>
-        <div class="navbar-actions">
-            <div class="navbar-user">
-                Hello, <strong id="username">${username}</strong>!
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" id="home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" id="catalog-button">Articles</a></li>
+                    <li class="nav-item"><a class="nav-link" id="start-game">Flappy bird</a></li>
+                </ul>
+                <div id="welcome-user" class="navbar-actions ms-auto ${username === 'Guest' ? 'd-none' : ''}" style="color: white">
+                    Hello, <strong id="username">${username}</strong>!
+                </div>
+                <div class="navbar-actions ms-3 row">
+                    <div class="col">              
+                        <input type="text" id="registerInput" class="form-control d-none" placeholder="Enter your name" />
+                    </div>
+                    <div class="col">            
+                        <button id="registerButton" class="btn btn-secondary ms-2">Реєстрація</button>
+                    </div>
+                    <div class="col">                  
+                        <button id="logoutButton" class="btn btn-secondary ms-2 ${username === 'Guest' ? 'd-none' : ''}">Logout</button>
+                    </div>
+                </div>
             </div>
-            <input type="text" id="registerInput" placeholder="Enter your name" style="display: none;" />
-            <button id="registerButton">Реєстрація</button>
-            <button id="logoutButton" style="display: ${username === 'Guest' ? 'none' : 'block'};">Logout</button>
         </div>
     `;
 
-    header.appendChild(style);
     header.appendChild(nav);
 
-    const toggler = header.querySelector('.navbar-toggler');
-    const menu = header.querySelector('.navbar-menu');
+    const bootstrap = window.bootstrap || {};
+    const collapse = new bootstrap.Collapse(nav.querySelector('#navbarNav'), { toggle: false });
+
+    const toggler = nav.querySelector('.navbar-toggler');
     toggler.addEventListener('click', () => {
-        menu.classList.toggle('show');
+        collapse.toggle();
     });
 
-    const registerButton = header.querySelector('#registerButton');
-    const registerInput = header.querySelector('#registerInput');
-    const usernameDisplay = header.querySelector('#username');
-    const logoutButton = header.querySelector('#logoutButton');
-    const navbarUser = header.querySelector('.navbar-user');
+    const registerButton = nav.querySelector('#registerButton');
+    const registerInput = nav.querySelector('#registerInput');
+    const usernameDisplay = nav.querySelector('#username');
+    const logoutButton = nav.querySelector('#logoutButton');
+    const welcomeUser = nav.querySelector('#welcome-user');
+    
+    if (username !== notRegistretedUser) {
+        registerInput.classList.add('d-none');
+        registerButton.classList.add('d-none')
+    }
 
     registerButton.addEventListener('click', () => {
-        if (registerInput.style.display === 'none') {
-            registerInput.style.display = 'block';
+        if (registerInput.classList.contains('d-none')) {
+            registerInput.classList.remove('d-none');
             registerButton.textContent = 'Submit';
-            navbarUser.style.display = 'none';
         } else {
             const newUsername = registerInput.value.trim();
             if (newUsername) {
                 localStorage.setItem('username', newUsername);
                 usernameDisplay.textContent = newUsername;
-                registerInput.style.display = 'none';
-                registerButton.textContent = 'Реєстрація';
-                logoutButton.style.display = 'block';
-                navbarUser.style.display = 'block';
+                registerInput.classList.add('d-none');
+                registerButton.classList.add('d-none')
+                logoutButton.classList.remove('d-none');
+                welcomeUser.classList.remove('d-none');
                 registerInput.value = '';
             } else {
-                registerInput.style.display = 'none';
-                registerButton.textContent = 'Реєстрація';
-                navbarUser.style.display = 'block';
+                welcomeUser.classList.add("d-none")
+                registerInput.classList.add('d-none');
             }
         }
     });
@@ -167,8 +106,8 @@ export function createAppHeader() {
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('username');
         usernameDisplay.textContent = 'Guest';
-        logoutButton.style.display = 'none';
-        navbarUser.style.display = 'block';
+        welcomeUser.classList.add("d-none")
+        logoutButton.classList.add('d-none');
     });
 
     return header;
