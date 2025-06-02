@@ -68,14 +68,9 @@ export class BackgroundService {
 
     _startAnimation() {
         for (let i = 0; i < this.numBirds; i++) {
-            const frames = [];
-            for (let j = 0; j < 3; j++) {
-                const idx = Math.floor(Math.random() * this.loadedImgs.length);
-                frames.push(this.loadedImgs[idx]);
-            }
             const speedX = Math.random() * 1 + 0.5;
             const bird = new BaseBird(
-                frames,
+                this.loadedImgs,
                 -this.birdSize,
                 Math.random() * this.canvas.height,
                 this.birdSize,
